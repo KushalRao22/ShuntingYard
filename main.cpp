@@ -3,6 +3,8 @@
 
 using namespace std;
 
+Node* stackHead = NULL;
+
 int main(){
   char input[256];
   cin.get(input, 256);
@@ -12,8 +14,5 @@ int main(){
       rInput[i/2] = input[i];
     }
   }
-  //  rInput[strlen(rInput) + 1] = "\0";
-  cout << rInput << endl;
-  cout << input << endl;
   return 0;
 }
