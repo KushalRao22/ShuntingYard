@@ -26,15 +26,12 @@ int main(){
     char temp = infix[i];
     Node* newNode = new Node;
     newNode->value = temp;
-    cout << "HERE" << endl;
-    if(temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^' || temp == ')'){
+    if(temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^' || temp == '('){
       newNode->next = stackHead;
       stackHead = newNode;
     }
     else{
-      cout << "Here1" << endl;
       if(queueHead == NULL){
-	cout << "Here2" << endl;
 	newNode->prev = NULL;
 	newNode->next = NULL;
 	queueHead = newNode;
