@@ -13,6 +13,9 @@ Node* stackHead = NULL;
 Node* queueHead = NULL;
 Node* queueEnd = NULL;
 
+void push(char value);
+void enqueue(char value);
+
 int main(){
   char input[256];
   cin.get(input, 256);
@@ -24,25 +27,11 @@ int main(){
   }
   for(int i = 0; i < strlen(infix); i++){
     char temp = infix[i];
-    Node* newNode = new Node;
-    newNode->value = temp;
     if(temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^' || temp == '('){
-      newNode->next = stackHead;
-      stackHead = newNode;
+      push(temp);
     }
     else{
-      if(queueHead == NULL){
-	newNode->prev = NULL;
-	newNode->next = NULL;
-	queueHead = newNode;
-	queueEnd = newNode;
-      }
-      else{
-	newNode->prev = queueEnd;
-	queueEnd->next = newNode;
-	newNode->next = NULL;
-	queueEnd = newNode;
-      }
+      enqueue(temp);
     }
   }
   
@@ -69,4 +58,28 @@ int main(){
     }
   }
   return 0;
+}
+
+void push(char value){
+  Node* newNode = new Node;
+  newNode->value = value;
+  newNode->next = stackHead;
+  stackHead = newNode;
+}
+
+void enqueue(char value){
+  Node* newNode = new Node;
+  newNode->value = value;
+  if(queueHead == NULL){
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    queueHead = newNode;
+    queueEnd = newNode;
+  }
+  else{
+	  newNode->prev = queueEnd;
+	  queueEnd->next = newNode;
+	  newNode->next = NULL;
+	  queueEnd = newNode;
+  } 
 }
