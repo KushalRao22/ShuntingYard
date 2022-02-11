@@ -13,8 +13,13 @@ Node* stackHead = NULL;
 Node* queueHead = NULL;
 Node* queueEnd = NULL;
 
-void push(char value);
-void enqueue(char value);
+void push(Node* newNode);
+void enqueue(Node* newNode);
+void printQueue();
+void pop(Node* &current);
+void dequeue(Node* &current);
+void printStack();
+char peep();
 
 int main(){
   char input[256];
@@ -25,16 +30,88 @@ int main(){
       infix[i/2] = input[i];
     }
   }
+  infix[strlen(input)/2 + 1] = '\0';
   for(int i = 0; i < strlen(infix); i++){
     char temp = infix[i];
+    Node* newNode = new Node;
+    newNode->value = temp;
     if(temp == '+' || temp == '-' || temp == '*' || temp == '/' || temp == '^' || temp == '('){
-      push(temp);
+      push(newNode);
+    }
+    else if(temp == ')'){
+      Node* nodeTemp;
+      bool run = true;
+      while(run){
+	if(peep() != '('){
+	  pop(nodeTemp);
+	  enqueue(nodeTemp);
+	}
+	else{
+	  pop(nodeTemp);
+	  run = false;
+	}
+      }
     }
     else{
-      enqueue(temp);
+      enqueue(newNode);
+    }
+  }
+  bool run;
+  while(run){
+    if(stackHead != NULL){
+      Node* nodeTemp;
+      pop(nodeTemp);
+      enqueue(nodeTemp);
+    }
+    else{
+      run = false;
     }
   }
   
+  printStack();
+  
+  cout << endl;
+
+  printQueue();
+
+  return 0;
+}
+
+void push(Node* newNode){
+  newNode->next = stackHead;
+  stackHead = newNode;
+}
+
+void enqueue(Node* newNode){
+  if(queueHead == NULL){
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    queueHead = newNode;
+    queueEnd = newNode;
+  }
+  else{
+    newNode->prev = queueEnd;
+    queueEnd->next = newNode;
+    newNode->next = NULL;
+    queueEnd = newNode;
+  } 
+}
+
+void printQueue(){
+  bool run = true;
+  Node* current = queueHead;
+  while(run){
+    cout << current->value;
+    if(current->next != NULL){
+      current = current->next;
+    }
+    else{
+      run = false;
+    }
+  }
+}
+
+void printStack(){
   bool run = true;
   while(run){
     cout << stackHead->value;
@@ -45,41 +122,20 @@ int main(){
       run = false;
     }
   }
-  cout << endl;
-  
-  run = true;
-  while(run){
-    cout << queueHead->value;
-    if(queueHead->next != NULL){
-      queueHead = queueHead->next;
-    }
-    else{
-      run = false;
-    }
-  }
-  return 0;
 }
 
-void push(char value){
-  Node* newNode = new Node;
-  newNode->value = value;
-  newNode->next = stackHead;
-  stackHead = newNode;
+void pop(Node* &current){
+  current = stackHead;
+  stackHead = stackHead->next;
 }
 
-void enqueue(char value){
-  Node* newNode = new Node;
-  newNode->value = value;
-  if(queueHead == NULL){
-    newNode->prev = NULL;
-    newNode->next = NULL;
-    queueHead = newNode;
-    queueEnd = newNode;
+void dequeue(Node* &current){
+  current = queueHead;
+  if(queueHead->next != NULL){
+    queueHead = queueHead->next;
   }
-  else{
-	  newNode->prev = queueEnd;
-	  queueEnd->next = newNode;
-	  newNode->next = NULL;
-	  queueEnd = newNode;
-  } 
+}
+
+char peep(){
+  return stackHead->value;
 }
