@@ -56,10 +56,10 @@ int main(){
       enqueue(newNode);
     }
   }
-  bool run;
+  bool run = true;
+  Node* nodeTemp;
   while(run){
     if(stackHead != NULL){
-      Node* nodeTemp;
       pop(nodeTemp);
       enqueue(nodeTemp);
     }
@@ -69,8 +69,6 @@ int main(){
   }
   
   printStack();
-  
-  cout << endl;
 
   printQueue();
 
@@ -109,10 +107,14 @@ void printQueue(){
       run = false;
     }
   }
+  cout << endl;
 }
 
 void printStack(){
   bool run = true;
+  if(stackHead == NULL){
+    run = false;
+  }
   while(run){
     cout << stackHead->value;
     if(stackHead->next != NULL){
@@ -122,6 +124,7 @@ void printStack(){
       run = false;
     }
   }
+  cout << endl;
 }
 
 void pop(Node* &current){
