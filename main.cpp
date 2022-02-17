@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include "BinaryTreeNode.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ struct Node{//Create a student struct
 Node* stackHead = NULL;
 Node* queueHead = NULL;
 Node* queueEnd = NULL;
+Node* BTStackHead = NULL;
 
 void push(Node* newNode);
 void enqueue(Node* newNode);
@@ -20,6 +22,8 @@ void pop(Node* &current);
 void dequeue(Node* &current);
 void printStack();
 char peep();
+void makeTree();
+void printBTStack();
 
 int main(){
   char input[256];
@@ -68,16 +72,60 @@ int main(){
     }
   }
   
-  printStack();
+  //  printStack();
 
   printQueue();
 
+  makeTree();
   return 0;
 }
 
 void push(Node* newNode){
   newNode->next = stackHead;
   stackHead = newNode;
+}
+
+void pop(Node* &current){
+  current = stackHead;
+  stackHead = stackHead->next;
+}
+
+
+char peep(){
+  return stackHead->value;
+}
+
+void BTpush(Node* newNode1){
+  newNode1->next = BTStackHead;
+  BTStackHead = newNode1;
+}
+
+void makeTree(){
+  bool run = true;
+  while(run){
+    Node* current;
+    if(queueHead->value != '+' && queueHead->value != '-' && queueHead->value != '*' && queueHead->value != '/' && queueHead->value != '^'){
+      dequeue(current);
+      BTpush(current);
+
+  printBTStack();
+
+    }
+    else{
+      
+    }
+    if(queueHead->next == NULL){
+      run = false;
+    }
+    }
+}
+
+
+void dequeue(Node* &current){
+  current = queueHead;
+  if(queueHead->next != NULL){
+    queueHead = queueHead->next;
+  }
 }
 
 void enqueue(Node* newNode){
@@ -93,6 +141,24 @@ void enqueue(Node* newNode){
     newNode->next = NULL;
     queueEnd = newNode;
   } 
+}
+
+void printBTStack(){
+  bool run = true;
+  if(BTStackHead == NULL){
+    run = false;
+  }
+  while(run){
+    cout << BTStackHead->value;
+    if(BTStackHead->next != NULL){
+      BTStackHead = BTStackHead->next;
+    }
+    else{
+      run = false;
+    }
+  }
+  cout << endl;
+
 }
 
 void printQueue(){
@@ -125,20 +191,4 @@ void printStack(){
     }
   }
   cout << endl;
-}
-
-void pop(Node* &current){
-  current = stackHead;
-  stackHead = stackHead->next;
-}
-
-void dequeue(Node* &current){
-  current = queueHead;
-  if(queueHead->next != NULL){
-    queueHead = queueHead->next;
-  }
-}
-
-char peep(){
-  return stackHead->value;
 }
