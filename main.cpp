@@ -96,6 +96,7 @@ char peep(){
 }
 
 void BTpush(Node* newNode1){
+  cout << newNode1->value << endl;
   newNode1->next = BTStackHead;
   BTStackHead = newNode1;
 }
@@ -103,21 +104,18 @@ void BTpush(Node* newNode1){
 void makeTree(){
   bool run = true;
   while(run){
-    Node* current;
     if(queueHead->value != '+' && queueHead->value != '-' && queueHead->value != '*' && queueHead->value != '/' && queueHead->value != '^'){
+      Node* current;
       dequeue(current);
       BTpush(current);
 
   printBTStack();
 
     }
-    else{
-      
-    }
-    if(queueHead->next == NULL){
+    else if(queueHead->next== NULL){
       run = false;
     }
-    }
+  }
 }
 
 
@@ -158,7 +156,6 @@ void printBTStack(){
     }
   }
   cout << endl;
-
 }
 
 void printQueue(){
