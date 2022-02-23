@@ -13,7 +13,7 @@ struct Node{//Create a student struct
 Node* stackHead = NULL;
 Node* queueHead = NULL;
 Node* queueEnd = NULL;
-Node* BTStackHead = NULL;
+BTNode* BTStackHead = NULL;
 
 void push(Node* newNode);
 void enqueue(Node* newNode);
@@ -96,25 +96,29 @@ char peep(){
 }
 
 void BTpush(Node* newNode1){
-  cout << newNode1->value << endl;
   newNode1->next = BTStackHead;
   BTStackHead = newNode1;
 }
 
 void makeTree(){
   bool run = true;
+  Node* current;
   while(run){
     if(queueHead->value != '+' && queueHead->value != '-' && queueHead->value != '*' && queueHead->value != '/' && queueHead->value != '^'){
-      Node* current;
+      
       dequeue(current);
       BTpush(current);
-
-  printBTStack();
-
+      
+      printBTStack();
+  
     }
     else if(queueHead->next== NULL){
       run = false;
     }
+    else{
+      queueHead = queueHead->next;
+    }
+    
   }
 }
 
@@ -143,13 +147,14 @@ void enqueue(Node* newNode){
 
 void printBTStack(){
   bool run = true;
-  if(BTStackHead == NULL){
+  Node* current = BTStackHead;
+  if(current == NULL){
     run = false;
   }
   while(run){
-    cout << BTStackHead->value;
-    if(BTStackHead->next != NULL){
-      BTStackHead = BTStackHead->next;
+    cout << current->value;
+    if(current->next != NULL){
+      current = current->next;
     }
     else{
       run = false;
