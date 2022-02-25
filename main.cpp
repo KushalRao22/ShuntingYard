@@ -13,8 +13,10 @@ struct Node{//Create a student struct
 Node* stackHead = NULL;
 Node* queueHead = NULL;
 Node* queueEnd = NULL;
-BTNode* BTStackHead = NULL;
+BinaryTreeNode* BTStackHead = NULL;
+BinaryTreeNode* treeHead = NULL;
 
+void printTree();
 void push(Node* newNode);
 void enqueue(Node* newNode);
 void printQueue();
@@ -24,6 +26,8 @@ void printStack();
 char peep();
 void makeTree();
 void printBTStack();
+void BTPush(BinaryTreeNode* newNode1);
+void BTPop(Node* &current);
 
 int main(){
   char input[256];
@@ -71,13 +75,33 @@ int main(){
       run = false;
     }
   }
-  
-  //  printStack();
-
   printQueue();
 
   makeTree();
+
+  printTree();
+  cout << "end" << endl;
   return 0;
+}
+
+void printTree(){
+  bool run = true;
+  BinaryTreeNode* current = treeHead;
+  while(run){
+    cout << "Here" << endl;
+    cout << current->value << endl;
+    if(current->left  == NULL){
+      run = false;
+    }
+    else{
+      cout << "Left: " << current->getLeft()->value << "Right: " << current->getRight()->value << endl;
+      current = current->getRight();
+    }
+
+
+  }
+
+
 }
 
 void push(Node* newNode){
@@ -95,9 +119,14 @@ char peep(){
   return stackHead->value;
 }
 
-void BTpush(Node* newNode1){
+void BTpush(BinaryTreeNode* newNode1){
   newNode1->next = BTStackHead;
   BTStackHead = newNode1;
+}
+
+void BTPop(BinaryTreeNode* &current){
+  current = BTStackHead;
+  BTStackHead = BTStackHead->next;
 }
 
 void makeTree(){
@@ -105,29 +134,30 @@ void makeTree(){
   Node* current;
   while(run){
     if(queueHead->value != '+' && queueHead->value != '-' && queueHead->value != '*' && queueHead->value != '/' && queueHead->value != '^'){
-      
       dequeue(current);
-      BTpush(current);
-      
-      printBTStack();
-  
-    }
-    else if(queueHead->next== NULL){
-      run = false;
+      BinaryTreeNode* BTcurrent = new BinaryTreeNode(current->value);
+      BTpush(BTcurrent);
     }
     else{
-      queueHead = queueHead->next;
+      dequeue(current);
+      BinaryTreeNode* BTcurrent = new BinaryTreeNode(current->value);
+      BinaryTreeNode* point;
+      BTPop(point);
+      BTcurrent->setRight(point);
+      BTPop(point);
+      BTcurrent->setLeft(point);
+      BTpush(BTcurrent);
+      treeHead = BTcurrent;
     }
-    
+    if(queueHead == NULL){
+      run = false;
+    }
   }
 }
 
-
 void dequeue(Node* &current){
   current = queueHead;
-  if(queueHead->next != NULL){
-    queueHead = queueHead->next;
-  }
+  queueHead = queueHead->next;
 }
 
 void enqueue(Node* newNode){
@@ -147,14 +177,14 @@ void enqueue(Node* newNode){
 
 void printBTStack(){
   bool run = true;
-  Node* current = BTStackHead;
+  BinaryTreeNode* current = BTStackHead;
   if(current == NULL){
     run = false;
   }
   while(run){
     cout << current->value;
-    if(current->next != NULL){
-      current = current->next;
+    if(current->right != NULL){
+      current = current->right;
     }
     else{
       run = false;

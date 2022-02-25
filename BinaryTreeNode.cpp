@@ -3,7 +3,8 @@
 
 using namespace std;
 
-BinaryTreeNode::BinaryTreeNode(){
+BinaryTreeNode::BinaryTreeNode(char valueIn){
+  value = valueIn;
   left = NULL;
   right = NULL;
 }
