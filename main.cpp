@@ -1,9 +1,9 @@
 /*
 This is Shunting yard with a binary tree to print infix, postfix and prefix
 
-Last Modified: 3/1/22
+Last Modified: 3/2/22
 
-By: Kushal Ro
+By: Kushal Rao
 */
 //Imports
 #include <iostream>
