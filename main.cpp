@@ -69,7 +69,6 @@ int main(){
 	  run = false;
 	}
       }
-    }
   else{//Other wise add it to queue
       enqueue(newNode, queueHead, queueEnd);
     }
